@@ -1,0 +1,65 @@
+:root { --maroon: #800000; --gold: #d4af37; --cream: #fdfaf3; --dark: #2c2c2c; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
+body { background:var(--cream); color:var(--dark); line-height:1.6; }
+
+.container { max-width:1200px; margin:0 auto; padding:0 5%; }
+.section-title { text-align:center; color:var(--maroon); margin:40px 0 20px; font-size:2rem; }
+
+/* Buttons */
+.btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:6px; text-decoration:none; font-weight:bold; border:none; cursor:pointer; }
+.btn-primary { background:var(--gold); color:var(--maroon); }
+.btn-whatsapp { background:#25D366; color:#fff; }
+
+/* Header */
+header { background:var(--maroon); padding:10px 0; position:sticky; top:0; z-index:1000; color:#fff; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; }
+.logo { font-size:1.5rem; font-weight:bold; } .logo span{ color:var(--gold); }
+nav ul { display:flex; gap:15px; list-style:none; }
+nav a { color:#fff; text-decoration:none; }
+.whatsapp-top { background:#25D366; color:white; padding:5px 12px; border-radius:20px; text-decoration:none; font-size:0.9rem; }
+
+/* Hero */
+.hero { background:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1610189657-3d3a3e0f1b5d?w=1500'); background-size:cover; padding:80px 0; text-align:center; color:white; }
+.hero h1 { color:var(--gold); font-size:2.5rem; }
+.hero-buttons { margin-top:20px; display:flex; justify-content:center; gap:10px; }
+
+/* About */
+#about { background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1590735213362-9a9a0d5b8b5b?w=1200'); background-size:cover; padding:60px 0; color:white; margin-top:30px; border-radius:10px; text-align:center; }
+
+/* Filters & Grid */
+.filters { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+.filter-btn { background:transparent; border:1px solid var(--maroon); color:var(--maroon); padding:5px 15px; border-radius:20px; cursor:pointer; }
+.filter-btn.active, .filter-btn:hover { background:var(--maroon); color:white; }
+
+.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px; }
+.product-card { background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1); cursor:pointer; transition:0.3s; }
+.product-card:hover { transform:translateY(-5px); }
+.product-card img { width:100%; height:280px; object-fit:cover; }
+.product-info { padding:15px; text-align:center; }
+.product-price { color:var(--maroon); font-weight:bold; font-size:1.1rem; }
+
+/* Modal */
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:2000; align-items:center; justify-content:center; padding:10px; }
+.modal-content { background:#fff; width:100%; max-width:800px; display:flex; flex-wrap:wrap; border-radius:10px; overflow:hidden; position:relative; max-height:90vh; overflow-y:auto; }
+.modal-close { position:absolute; top:10px; right:15px; font-size:30px; cursor:pointer; border:none; background:none; }
+.modal-left, .modal-right { flex:1; min-width:300px; }
+.modal-left img { width:100%; height:100%; object-fit:cover; max-height:450px; }
+.modal-right { padding:20px; }
+.modal-btns { display:flex; gap:10px; margin:15px 0; }
+.modal-btn { flex:1; padding:10px; border-radius:5px; text-align:center; cursor:pointer; border:none; font-weight:bold; text-decoration:none; }
+.modal-btn-whatsapp { background:#25D366; color:white; }
+.modal-btn-cart { background:var(--maroon); color:white; }
+.payment-box { background:#f5f5f5; padding:10px; border-radius:5px; font-size:0.9rem; margin-bottom:10px; }
+
+/* Cart Mini */
+.cart-mini { border:1px dashed #ccc; padding:10px; margin-top:10px; border-radius:5px; font-size:0.9rem; }
+
+/* Contact */
+.contact-row { display:flex; flex-wrap:wrap; gap:20px; }
+.contact-col { flex:1; min-width:300px; background:#f9f9f9; padding:20px; border-radius:10px; }
+.contact-item { margin-bottom:10px; display:flex; gap:10px; align-items:center; }
+.contact-item i { color:var(--maroon); }
+
+footer { background:var(--maroon); color:white; text-align:center; padding:20px; margin-top:40px; }
+
+@media(max-width:768px){ .header-inner{ flex-direction:column; gap:10px; } .hero h1{ font-size:2rem; } .modal-left img { height: 250px; } }

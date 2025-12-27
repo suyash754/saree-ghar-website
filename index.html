@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saree Ghar | Baramati</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <div class="logo">Saree <span>Ghar</span></div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#collections">Collections</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="whatsapp-top" href="https://wa.me/919850937088" target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-inner container">
+      <h1>Saree Ghar – Baramati</h1>
+      <p>Exclusive Home-Based Collection: Designer, Paithani, Kaathpadar, Synthetic, and Cotton Sarees.</p>
+      <div class="hero-buttons">
+        <a href="#collections" class="btn btn-primary">View Collection</a>
+        <a href="https://wa.me/919850937088?text=I%20want%20to%20see%20your%20sarees" class="btn btn-whatsapp" target="_blank">
+          <i class="fab fa-whatsapp"></i> Order on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container about-inner">
+      <h2 class="section-title" style="color:#fff;">About Us</h2>
+      <p>Saree Ghar is a trusted home-based boutique in <strong>Baramati</strong> owned by <strong>Vandana Chavan</strong>.</p>
+      <p>We offer high-quality traditional and modern sarees at reasonable prices. Visit us to see the fabric quality yourself!</p>
+    </div>
+  </section>
+
+  <!-- COLLECTIONS -->
+  <section id="collections">
+    <h2 class="section-title">Our Collections</h2>
+
+    <!-- Filters matching your request -->
+    <div class="filters">
+      <button class="filter-btn active" data-cat="all">All</button>
+      <button class="filter-btn" data-cat="designer">Designer</button>
+      <button class="filter-btn" data-cat="paithani">Paithani</button>
+      <button class="filter-btn" data-cat="kaathpadar">Kaathpadar</button>
+      <button class="filter-btn" data-cat="synthetic">Synthetic</button>
+      <button class="filter-btn" data-cat="cotton">Cotton</button>
+    </div>
+
+    <div class="grid container" id="sareeGrid"></div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal" id="sareeModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <div class="modal-left">
+        <img id="mImg" src="" alt="Saree">
+      </div>
+      <div class="modal-right">
+        <h2 id="mTitle"></h2>
+        <div class="modal-cat" id="mCat"></div>
+        <div class="modal-price" id="mPrice"></div>
+        <p class="modal-desc" id="mDesc"></p>
+        
+        <div class="modal-btns">
+          <a href="#" id="waLink" class="modal-btn modal-btn-whatsapp" target="_blank">
+            <i class="fab fa-whatsapp"></i> Buy Now
+          </a>
+          <button class="modal-btn modal-btn-cart" id="addToCartBtn">Add to Cart</button>
+        </div>
+
+        <div class="payment-box">
+          <p><strong>Payment Options:</strong></p>
+          <p>GPay / PhonePe: <strong>9850937088</strong></p>
+          <p>UPI ID: <strong>9850937088@okbizaxis</strong></p>
+        </div>
+
+        <!-- Mini Cart Display -->
+        <div class="cart-mini">
+          <div class="cart-mini-title">Your Cart</div>
+          <div id="cartBody">Empty</div>
+          <button class="btn btn-primary" id="checkoutBtn" style="width:100%; margin-top:10px; font-size:12px;">Send Cart to WhatsApp</button>
+          <button id="clearCartBtn" style="background:none; border:none; color:#666; font-size:11px; margin-top:5px; cursor:pointer; text-decoration:underline;">Clear Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2 class="section-title">Contact Us</h2>
+    <div class="container contact-row">
+      <div class="contact-col">
+        <h3>Store Details</h3>
+        <div class="contact-item"><i class="fas fa-map-marker-alt"></i> C/4, Chandra‑Vijay Housing Society, TC College Road, Baramati</div>
+        <div class="contact-item"><i class="fas fa-phone"></i> +91 98509 37088</div>
+        <div class="contact-item"><i class="fas fa-envelope"></i> vandanachavan817@gmail.com</div>
+        <div class="contact-item"><i class="fas fa-clock"></i> Mon-Sat: 10 AM - 7 PM</div>
+      </div>
+      
+      <!-- Google Map -->
+      <div class="contact-col map-wrapper">
+         <iframe 
+           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.152065208888!2d74.55985727580494!3d18.459371670034567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc3a9b8c1e63b33%3A0x162ae347b26b2f84!2sTC%20College%20Rd%2C%20Baramati%2C%20Maharashtra%20413102!5e0!3m2!1sen!2sin!4v1709736095804!5m2!1sen!2sin" 
+           width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Saree Ghar Baramati. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
