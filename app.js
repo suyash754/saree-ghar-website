@@ -1,156 +1,197 @@
-// Saree Ghar - app.js
+// Saree Ghar - app.js (UPDATED for images at the root level)
 
-const PHONE_WA = "919850937088"; 
+// Your WhatsApp number with country code (no +)
+const PHONE_WA = "919850937088";
 
-// --- GENERATE PRODUCTS BASED ON YOUR COUNTS ---
+// Your complete product list with correct image paths
 const sareeData = [
-  // 1. Designer (5 Sarees)
-  ...Array.from({ length: 5 }, (_, i) => ({
-    id: `designer-${i + 1}`,
-    cat: "designer",
-    name: `Designer Saree ${i + 1}`,
-    price: 2200 + (i * 200),
-    img: `images/sarees/designer-${i + 1}.jpeg`,
-    desc: "Elegant Designer saree, perfect for parties and modern occasions."
-  })),
+    // --- Designer (5 sarees) ---
+    ...Array.from({ length: 5 }, (_, i) => ({
+        id: `designer-${i + 1}`,
+        cat: "designer",
+        name: `Designer Saree ${i + 1}`,
+        price: 2200 + i * 200,
+        img: `designer-${i + 1}.jpeg`, // REMOVED folder path
+        desc: "A modern designer saree with unique patterns, perfect for parties and special occasions."
+    })),
 
-  // 2. Paithani (8 Sarees)
-  ...Array.from({ length: 8 }, (_, i) => ({
-    id: `paithani-${i + 1}`,
-    cat: "paithani",
-    name: `Royal Paithani ${i + 1}`,
-    price: 12000 + (i * 500),
-    img: `images/sarees/paithani-${i + 1}.jpeg`,
-    desc: "Authentic hand-woven Paithani with traditional peacock border."
-  })),
+    // --- Paithani (8 sarees) ---
+    ...Array.from({ length: 8 }, (_, i) => ({
+        id: `paithani-${i + 1}`,
+        cat: "paithani",
+        name: `Traditional Paithani ${i + 1}`,
+        price: 12000 + i * 500,
+        img: `paithani-${i + 1}.jpeg`, // REMOVED folder path
+        desc: "Authentic Paithani saree with rich zari work, representing the classic heritage of Maharashtra."
+    })),
 
-  // 3. Kaathpadar (6 Sarees)
-  ...Array.from({ length: 6 }, (_, i) => ({
-    id: `kaathpadar-${i + 1}`,
-    cat: "kaathpadar",
-    name: `Kaathpadar Silk ${i + 1}`,
-    price: 3500 + (i * 250),
-    img: `images/sarees/kaathpadar-${i + 1}.jpeg`,
-    desc: "Traditional Maharashtrian Kaathpadar saree with rich border work."
-  })),
+    // --- Kaathpadar (6 sarees) ---
+    ...Array.from({ length: 6 }, (_, i) => ({
+        id: `kaathpadar-${i + 1}`,
+        cat: "kaathpadar",
+        name: `Kaathpadar Silk ${i + 1}`,
+        price: 3500 + i * 250,
+        img: `kaathpadar-${i + 1}.jpeg`, // REMOVED folder path
+        desc: "An elegant Kaathpadar saree known for its distinctive and beautiful border."
+    })),
+    
+    // --- Synthetic (No images, so we'll skip adding this to the data for now) ---
+    // If you add synthetic-1.jpeg, etc., you can uncomment this section.
+    /*
+    ...Array.from({ length: 7 }, (_, i) => ({
+        id: `synthetic-${i + 1}`,
+        cat: "synthetic",
+        name: `Synthetic Saree ${i + 1}`,
+        price: 900 + i * 100,
+        img: `synthetic-${i + 1}.jpeg`, // REMOVED folder path
+        desc: "A lightweight and easy-to-manage synthetic saree, great for daily wear."
+    })),
+    */
 
-  // 4. Synthetic (7 Sarees)
-  ...Array.from({ length: 7 }, (_, i) => ({
-    id: `synthetic-${i + 1}`,
-    cat: "synthetic",
-    name: `Synthetic Daily Wear ${i + 1}`,
-    price: 850 + (i * 50),
-    img: `images/sarees/synthetic-${i + 1}.jpeg`,
-    desc: "Lightweight synthetic saree, easy to wash and wear daily."
-  })),
-
-  // 5. Cotton (8 Sarees)
-  ...Array.from({ length: 8 }, (_, i) => ({
-    id: `cotton-${i + 1}`,
-    cat: "cotton",
-    name: `Pure Cotton ${i + 1}`,
-    price: 1200 + (i * 100),
-    img: `images/sarees/cotton-${i + 1}.jpeg`,
-    desc: "Breathable pure cotton saree, very comfortable for all day use."
-  })),
+    // --- Cotton (8 sarees) ---
+    ...Array.from({ length: 8 }, (_, i) => ({
+        id: `cotton-${i + 1}`,
+        cat: "cotton",
+        name: `Pure Cotton Saree ${i + 1}`,
+        price: 1100 + i * 120,
+        img: `cotton-${i + 1}.jpeg`, // REMOVED folder path
+        desc: "A comfortable and breathable pure cotton saree, perfect for the Indian climate."
+    })),
 ];
 
-// --- APP LOGIC ---
+// ------- Get HTML Elements -------
 const grid = document.getElementById("sareeGrid");
 const modal = document.getElementById("sareeModal");
 const waLink = document.getElementById("waLink");
 const addToCartBtn = document.getElementById("addToCartBtn");
-const cartBody = document.getElementById("cartBody");
+const cartMiniBody = document.getElementById("cartMiniBody");
 const checkoutBtn = document.getElementById("checkoutBtn");
 const clearCartBtn = document.getElementById("clearCartBtn");
+const contactForm = document.getElementById("contactForm");
 
 let currentProduct = null;
-let cart = JSON.parse(localStorage.getItem("sareeCart")) || [];
+const CART_KEY = "sareeGharCart";
+let cart = loadCart();
 
-// Render Grid
+// ------- Main Functions -------
+
 function renderSarees(list) {
-  grid.innerHTML = "";
-  list.forEach((s) => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-    card.innerHTML = `
-      <img src="${s.img}" alt="${s.name}" onerror="this.src='https://via.placeholder.com/300x400?text=Image+Not+Found'">
-      <div class="product-info">
-        <div class="product-cat">${s.cat.toUpperCase()}</div>
-        <div class="product-name">${s.name}</div>
-        <div class="product-price">₹${s.price.toLocaleString()}</div>
-      </div>
-    `;
-    card.onclick = () => openModal(s);
-    grid.appendChild(card);
-  });
+    grid.innerHTML = "";
+    list.forEach((saree) => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+            <img src="${saree.img}" alt="${escapeHtml(saree.name)}" loading="lazy">
+            <div class="product-info">
+                <div class="product-cat">${escapeHtml(saree.cat)}</div>
+                <div class="product-name">${escapeHtml(saree.name)}</div>
+                <div class="product-price">₹${formatINR(saree.price)}</div>
+            </div>
+        `;
+        card.addEventListener("click", () => openModal(saree));
+        grid.appendChild(card);
+    });
 }
 
-// Filters
-document.querySelectorAll(".filter-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    const cat = btn.dataset.cat;
-    renderSarees(cat === "all" ? sareeData : sareeData.filter((s) => s.cat === cat));
-  });
-});
+function openModal(product) {
+    currentProduct = product;
+    document.getElementById("mImg").src = product.img;
+    document.getElementById("mTitle").innerText = product.name;
+    document.getElementById("mCat").innerText = product.cat.toUpperCase();
+    document.getElementById("mPrice").innerText = `₹${formatINR(product.price)}`;
+    document.getElementById("mDesc").innerText = product.desc;
 
-// Modal Logic
-function openModal(s) {
-  currentProduct = s;
-  document.getElementById("mImg").src = s.img;
-  document.getElementById("mTitle").innerText = s.name;
-  document.getElementById("mCat").innerText = s.cat.toUpperCase();
-  document.getElementById("mPrice").innerText = `₹${s.price.toLocaleString()}`;
-  document.getElementById("mDesc").innerText = s.desc;
+    const msg = encodeURIComponent(`Hello Saree Ghar, I want to buy:\n${product.name}\nPrice: ₹${formatINR(product.price)}\nPlease confirm availability.`);
+    waLink.href = `https://wa.me/${PHONE_WA}?text=${msg}`;
 
-  // WhatsApp Buy Link
-  const msg = encodeURIComponent(`Hello Saree Ghar, I want to buy: ${s.name} (₹${s.price}). Available?`);
-  waLink.href = `https://wa.me/${PHONE_WA}?text=${msg}`;
-
-  updateCartUI();
-  modal.style.display = "flex";
+    updateMiniCartUI();
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
 }
 
 function closeModal() {
-  modal.style.display = "none";
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "auto";
+    currentProduct = null;
 }
 
+window.closeModal = closeModal;
 window.onclick = (e) => { if (e.target === modal) closeModal(); };
 
-// Cart Logic
-addToCartBtn.onclick = () => {
-  cart.push(currentProduct);
-  localStorage.setItem("sareeCart", JSON.stringify(cart));
-  updateCartUI();
-  alert("Added to cart!");
-};
+// ------- Cart Functions -------
 
-function updateCartUI() {
-  if (cart.length === 0) {
-    cartBody.innerText = "Your cart is empty.";
-  } else {
-    cartBody.innerHTML = cart.map((i, idx) => `<div>${idx + 1}. ${i.name} - ₹${i.price}</div>`).join("");
+addToCartBtn.addEventListener("click", () => {
+    if (!currentProduct) return;
+    cart.push({ id: currentProduct.id, name: currentProduct.name, price: currentProduct.price });
+    saveCart();
+    updateMiniCartUI();
+    alert(`"${currentProduct.name}" added to cart!`);
+});
+
+checkoutBtn.addEventListener("click", () => {
+    if (!cart.length) return alert("Your cart is empty.");
+    
+    const lines = cart.map((item, idx) => `${idx + 1}. ${item.name} (₹${formatINR(item.price)})`);
     const total = cart.reduce((sum, i) => sum + i.price, 0);
-    cartBody.innerHTML += `<div style="margin-top:5px; font-weight:bold; border-top:1px solid #ccc; padding-top:5px;">Total: ₹${total.toLocaleString()}</div>`;
-  }
+    const msg = encodeURIComponent(`Hello Saree Ghar, I'd like to place an order for:\n\n${lines.join("\n")}\n\n*Total: ₹${formatINR(total)}*\n\nPlease confirm my order.`);
+    
+    window.open(`https://wa.me/${PHONE_WA}?text=${msg}`, "_blank", "noopener");
+});
+
+clearCartBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear your cart?")) {
+        cart = [];
+        saveCart();
+        updateMiniCartUI();
+    }
+});
+
+function updateMiniCartUI() {
+    if (!cart.length) {
+        cartMiniBody.innerText = "Your cart is empty.";
+        return;
+    }
+    const total = cart.reduce((sum, i) => sum + i.price, 0);
+    const text = cart.map((i, idx) => `${idx + 1}. ${i.name} — ₹${formatINR(i.price)}`).join("\n");
+    cartMiniBody.innerText = `${text}\n\nTotal: ₹${formatINR(total)}`;
 }
 
-checkoutBtn.onclick = () => {
-  if (cart.length === 0) return alert("Cart is empty!");
-  const itemsList = cart.map((i, idx) => `${idx + 1}. ${i.name} (₹${i.price})`).join("\n");
-  const total = cart.reduce((sum, i) => sum + i.price, 0);
-  const msg = encodeURIComponent(`Hello Saree Ghar, I want to order:\n\n${itemsList}\n\n*Total: ₹${total}*\n\nPlease confirm order.`);
-  window.open(`https://wa.me/${PHONE_WA}?text=${msg}`, "_blank");
-};
+function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+function loadCart() { try { const raw = localStorage.getItem(CART_KEY); return raw ? JSON.parse(raw) : []; } catch { return []; } }
 
-clearCartBtn.onclick = () => {
-  cart = [];
-  localStorage.setItem("sareeCart", JSON.stringify(cart));
-  updateCartUI();
-};
+// ------- Helper & Init Functions -------
 
-// Start
+contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    alert("Thank you! We will get in touch with you soon.");
+    contactForm.reset();
+});
+
+document.querySelectorAll('nav a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute("href"));
+        if (!target) return;
+        const offset = document.querySelector("header").offsetHeight + 10;
+        window.scrollTo({ top: target.offsetTop - offset, behavior: "smooth" });
+    });
+});
+
+document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const cat = btn.dataset.cat;
+        if (cat === "all") renderSarees(sareeData);
+        else renderSarees(sareeData.filter((x) => x.cat === cat));
+    });
+});
+
+function formatINR(n) { return Number(n).toLocaleString("en-IN"); }
+function escapeHtml(str) { return String(str).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m])); }
+
+// Initial Load
 renderSarees(sareeData);
-updateCartUI();
+updateMiniCartUI();
